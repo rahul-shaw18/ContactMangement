@@ -1,0 +1,86 @@
+<section class="position-relative">
+    <div *ngIf="showBackButton" class="arrow-position position-absolute d-flex justify-content-center align-items-center gap-1"><img
+            src="assets/icon/arrow-left-circle.svg" alt="" srcset="" (click)="goBack()">Back</div>
+    <p *ngIf="!showSelectedContactDetails" class="d-flex justify-center align-center">
+        Select the Contact from Contact Lists
+    </p>
+    <form *ngIf="showSelectedContactDetails" class="d-flex flex-column align-items-center gap-5"
+        [formGroup]="contactDetailsForm">
+        <div class="profile-pic">
+            <img [src]="gf['profile_pic'].value" alt="" srcset="" />
+        </div>
+        <div class="d-flex ms-auto justify-content-between flex-wrap gap-3 p-3">
+
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.name"></div>
+                <input *ngIf="isEditModeOn" type="text" id="name" formControlName="name" class="form-control"
+                    placeholder="Enter Name" />
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.email"></div>
+                <input *ngIf="isEditModeOn" type="text" id="email" formControlName="email" class="form-control"
+                    placeholder="Enter Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.gender"></div>
+                <input type="text" *ngIf="isEditModeOn" id="gender" formControlName="gender" class="form-control"
+                    placeholder="Enter Gender" />
+            </div>
+
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.dob"></div>
+                <input type="text " *ngIf="isEditModeOn" id="dob" formControlName="dob" class="form-control"
+                    placeholder="Enter Date of Birth" />
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.address"></div>
+                <input type="text" *ngIf="isEditModeOn" id="address" formControlName="address" class="form-control"
+                    placeholder="Enter Address" />
+            </div>
+
+            <div class="form-group">
+                <label for="phone_no">Phone Number:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.phone_no">
+                </div>
+                <input type="text" *ngIf="isEditModeOn" id="phone_no" formControlName="phone_no" class="form-control"
+                    placeholder="Enter Phone Number" />
+            </div>
+
+            <div class="form-group">
+                <label for="occupation">Occupation:</label>
+                <div class="form-values" class="form-values" *ngIf="!isEditModeOn"
+                    [textContent]="showSelectedContactDetails.occupation"></div>
+                <input type="text" *ngIf="isEditModeOn" id="occupation" formControlName="occupation"
+                    class="form-control" placeholder="Enter Occupation" />
+            </div>
+
+            <div class="form-group">
+                <label for="company_name">Company Name:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.company_name">
+                </div>
+                <input type="text" *ngIf="isEditModeOn" id="company_name" formControlName="company_name"
+                    class="form-control" placeholder="Enter Company Name" />
+            </div>
+
+            <div class="form-group">
+                <label for="department">Department:</label>
+                <div class="form-values" *ngIf="!isEditModeOn" [textContent]="showSelectedContactDetails.department">
+                </div>
+                <input type="text" *ngIf="isEditModeOn" id="department" formControlName="department"
+                    class="form-control" placeholder="Enter Department" />
+            </div>
+        </div>
+        <div class="footer p-3">
+            <button class="btn" [ngClass]="isEditModeOn?'btn-success':'btn-primary'"
+                (click)="changeState()">{{isEditModeOn ?'Save Changes':'Edit Contact'}}</button>
+        </div>
+    </form>
+</section>
