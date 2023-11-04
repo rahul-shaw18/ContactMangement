@@ -93,6 +93,7 @@ export class ContactListComponent implements OnInit {
   }
 
   onClickContact(item: Contact) {
+    this.selectedID = item.id;
     for (let list of this.contactsList) {
       if (list.id == item.id) {
         list.isSelected = true;

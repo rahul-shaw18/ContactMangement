@@ -3,7 +3,7 @@
     <input class="form-control" type="text" (input)="onSearch($event)" placeholder="Universal search" />
     <section class="contact-lists-section list-group">
         <div class="contact-lists list-group-item" *ngFor="let item of contactsList; let i = index"
-            [ngClass]="item.isSelected ? 'active ':''" (click)="onClickContact(item)">
+            [ngClass]="innerWidth >= 1000 && item.isSelected ? 'active ':''" (click)="onClickContact(item)">
 
             <div class="list-card d-flex gap-4">
                 <div class="d-flex justify-content-center align-items-center">
