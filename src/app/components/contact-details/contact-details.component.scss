@@ -1,16 +1,17 @@
+
+
 .arrow-position {
-    left: 10px;
-    top: 10px;
+    left: 30px;
+    top: 30px;
+    cursor: pointer;
 }
 .profile-pic {
-  color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
   border-color: #86b7fe;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
   border-radius: 50%;
   overflow: hidden;
-  width: fit-content;
+  width: 200px;
   img {
     width: 200px;
     background-position: contain;
@@ -32,11 +33,8 @@
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: var(--bs-body-color);
   appearance: none;
-  background-color: var(--bs-body-bg);
   background-clip: padding-box;
-  border: var(--bs-border-width) solid var(--bs-border-color);
   border-radius: var(--bs-border-radius);
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
   background: #f8f8f8;
@@ -53,4 +51,15 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.btn-main{
+  background-color: #cde1ff;
+  color: #4a4a4a;
+}
+@media screen and (max-width:1208px){
+  .form{
+    height: calc(100dvh - 430px);
+    overflow-y: auto;
+  }
 }

@@ -14,6 +14,7 @@ export class ContactDetailsComponent implements OnInit {
   showSelectedContactDetails: any;
   innerWidth!: number;
   showBackButton: boolean = false;
+  
   constructor(private sharedService: SharedService, private fb: FormBuilder) {
     this.contactDetailsForm = this.fb.group({
       name: [''],
@@ -44,11 +45,6 @@ export class ContactDetailsComponent implements OnInit {
       this.isEditModeOn = false;
       this.showSelectedContactDetails = JSON.parse(
         JSON.stringify(selectedContact)
-      );
-      console.log('SelectedContact: ', selectedContact);
-      console.log(
-        'showSelectedContactDetails: ',
-        this.showSelectedContactDetails
       );
       this.contactDetailsForm.patchValue(selectedContact);
     });

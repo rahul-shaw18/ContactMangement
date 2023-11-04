@@ -7,7 +7,7 @@
 
             <div class="list-card d-flex gap-4">
                 <div class="d-flex justify-content-center align-items-center">
-                    <img  [src]="item.profile_pic" alt="" srcset="">
+                    <img [src]="item.profile_pic" alt="" srcset="">
                 </div>
                 <div class="card-data">
                     <div><span>{{item.name}}</span>
@@ -15,11 +15,15 @@
                     </div>
                     <div class="d-flex gap-4">
                         <span class="min-w130"><strong>Ph:</strong>{{" "+item.phone_no}}</span>
-                        <span class="text-truncate" style="width: 250px;"><strong>Address:</strong>{{" "+item.address}}</span>
+                        <span class="text-truncate" style="width: 250px;"><strong>Address:</strong>{{"
+                            "+item.address}}</span>
                     </div>
                 </div>
             </div>
-
+            
         </div>
+        <p class="m-auto" *ngIf="!contactsList.length">No Contact found</p>
     </section>
+    <mat-paginator [length]="this.contactsListData.length" [pageSize]="this.pageSize" (page)="onPageChange($event)">
+    </mat-paginator>
 </section>

@@ -12,27 +12,58 @@ export class ContactListComponent implements OnInit {
   contactsListData: Contact[] = JSON.parse(JSON.stringify(contacts));
   contactsList: Contact[] = JSON.parse(JSON.stringify(contacts));
 
-  constructor(private sharedService: SharedService) {}
+  constructor(private sharedService: SharedService) { }
+  pageSize!:number
+  selectedID!: number;
   innerWidth!: number;
+
   @HostListener('window:resize', ['$event'])
   onResize() {
+    this.pageSize = Math.floor((window.innerHeight - 240) / 68);
     this.innerWidth = window.innerWidth;
-    if (this.innerWidth > 1000) {
-      this.contactsListData[0].isSelected = true;
-      this.contactsList[0].isSelected = true;
+    if (this.innerWidth >= 1000) {
+      let temp = this.contactsListData.filter(
+        (item) => item.isSelected == true
+      );
+      if (temp.length == 0 && !this.selectedID) {
+        this.contactsListData[0].isSelected = true;
+        this.contactsList[0].isSelected = true;
+      } else if (this.selectedID) {
+        for (let item of this.contactsListData) {
+          if (item.id == this.selectedID) {
+            item.isSelected = true;
+          }
+        }
+      }
     } else {
-      this.contactsListData[0].isSelected = false;
-      this.contactsList[0].isSelected = false;
+      this.contactsListData.forEach((item) => {
+        item.isSelected = false;
+      });
+
+      this.onPageChange({
+        previousPageIndex: 0,
+        pageIndex: 0,
+        pageSize: this.pageSize,
+        length: this.contactsListData.length,
+      });
     }
   }
 
   ngOnInit(): void {
     this.onResize()
+    this.onPageChange({
+      previousPageIndex: 0,
+      pageIndex: 0,
+      pageSize: this.pageSize,
+      length: this.contactsListData.length,
+    });
+
     this.sharedService.modifiedSelectedContact.subscribe(
       (modifiedContact: Contact) => {
         if (modifiedContact) {
           for (let item of this.contactsListData) {
             if (item.id == modifiedContact.id) {
+              this.selectedID = item.id;
               item.name = modifiedContact.name;
               item.email = modifiedContact.email;
               item.gender = modifiedContact.gender;
@@ -44,9 +75,18 @@ export class ContactListComponent implements OnInit {
               item.company_name = modifiedContact.company_name;
               item.department = modifiedContact.department;
               item.isSelected = modifiedContact.isSelected;
+            } else {
+              item.isSelected = false;
             }
           }
+
           this.contactsList = JSON.parse(JSON.stringify(this.contactsListData));
+          this.onPageChange({
+            previousPageIndex: 0,
+            pageIndex: 0,
+            pageSize: this.pageSize,
+            length: this.contactsListData.length,
+          });
         }
       }
     );
@@ -61,8 +101,8 @@ export class ContactListComponent implements OnInit {
       }
     }
     this.sharedService.selectedContact.next(item);
-    if (this.innerWidth < 1000) {
-      this.sharedService.showActiveComponent.next(false)
+    if (window.innerWidth < 1000) {
+      this.sharedService.showActiveComponent.next(false);
     }
   }
 
@@ -86,5 +126,13 @@ export class ContactListComponent implements OnInit {
       }
     }
     this.contactsList = temp;
+  }
+
+  onPageChange(e: any) {
+    const pageIndex = e.pageIndex;
+    const pageSize = e.pageSize;
+    const startIndex = pageIndex * pageSize;
+    const endIndex = startIndex + pageSize;
+    this.contactsList = this.contactsListData.slice(startIndex, endIndex);
   }
 }
