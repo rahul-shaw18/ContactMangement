@@ -1,4 +1,4 @@
 <section class="d-flex align-items-center gap-3">
-  <app-contact-list *ngIf="listView == undefined || listView == true" class="flex-item-35" [ngClass]="listView == true ? 'flex-item-full': ''"></app-contact-list>
+  <app-contact-list *ngIf="listView == undefined || listView == true" [ngClass]="listView == true ? 'flex-item-full': 'flex-item-35'"></app-contact-list>
   <app-contact-details *ngIf="listView == undefined || listView == false" class="flex-item-full"></app-contact-details>
 </section>
