@@ -25,12 +25,12 @@ export class AppComponent implements OnInit {
   
   ngOnInit(): void {
     this.onResize();
-    if (this.listView != undefined) {
+    // if (this.listView != undefined) {
       this.sharedService.showActiveComponent.subscribe((showComp: boolean) => {
         if (showComp != null && (showComp==true || showComp==false)) {
           this.listView = showComp;
         }
       });
-    }
+    // }
   }
 }
