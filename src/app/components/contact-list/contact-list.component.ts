@@ -11,6 +11,7 @@ import { Contact } from 'src/app/contact';
 export class ContactListComponent implements OnInit {
   contactsListData: Contact[] = JSON.parse(JSON.stringify(contacts));
   contactsList: Contact[] = JSON.parse(JSON.stringify(contacts));
+  isContactListEnded:boolean = false
 
   constructor(private sharedService: SharedService) { }
   pageSize!:number
@@ -19,7 +20,7 @@ export class ContactListComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize() {
-    this.pageSize = Math.floor((window.innerHeight - 240) / 68);
+    this.pageSize = Math.floor((window.innerHeight - 200) / 68);
     this.innerWidth = window.innerWidth;
     if (this.innerWidth >= 1000) {
       let temp = this.contactsListData.filter(
@@ -46,6 +47,34 @@ export class ContactListComponent implements OnInit {
         pageSize: this.pageSize,
         length: this.contactsListData.length,
       });
+    }
+  }
+
+  @HostListener('scroll', ['$event'])
+  onScroll($event: Event): void {
+  let scrollTop = ($event.target as Element).scrollTop;
+  let scrollHeight = ($event.target as Element).scrollHeight;
+  let offsetHeight = ($event.target as HTMLElement).offsetHeight;
+  let scrollPosition = scrollTop + offsetHeight;
+  let scrollTreshold = scrollHeight - 1;
+  
+  if(scrollPosition >= scrollTreshold) {
+    // User has scrolled to the bottom of the page, load more contacts
+    this.loadMoreContacts();
+  }
+  }
+  
+  loadMoreContacts() {
+    const startIndex = this.contactsList.length;
+    const endIndex = startIndex + 10; // Load 10 contacts at a time
+    const moreContacts = this.contactsListData.slice(startIndex, endIndex);
+  
+    if(moreContacts.length > 0) {
+      // There are more contacts to load
+      this.contactsList = [...this.contactsList, ...moreContacts];
+      this.pageSize = this.contactsList.length
+    } else {
+      this.isContactListEnded = true
     }
   }
 
@@ -108,20 +137,32 @@ export class ContactListComponent implements OnInit {
   }
 
   onSearch(e: any) {
+    let searchValue = e.target.value.toLowerCase()
     let temp = [];
+    
+    if (searchValue == '') {
+      this.onPageChange({
+        previousPageIndex: 0,
+        pageIndex: 0,
+        pageSize: this.pageSize,
+        length: this.contactsListData.length,
+       
+      });
+      return
+    }
     for (let item of this.contactsListData) {
       if (
-        item.name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.email.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.gender.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.dob.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.address.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.phone_no.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        item.occupation.toLowerCase().includes(e.target.value.toLowerCase()) ||
+        item.name.toLowerCase().includes(searchValue) ||
+        item.email.toLowerCase().includes(searchValue) ||
+        item.gender.toLowerCase().includes(searchValue) ||
+        item.dob.toLowerCase().includes(searchValue) ||
+        item.address.toLowerCase().includes(searchValue) ||
+        item.phone_no.toLowerCase().includes(searchValue) ||
+        item.occupation.toLowerCase().includes(searchValue) ||
         item.company_name
           .toLowerCase()
-          .includes(e.target.value.toLowerCase()) ||
-        item.department.toLowerCase().includes(e.target.value.toLowerCase())
+          .includes(searchValue) ||
+        item.department.toLowerCase().includes(searchValue)
       ) {
         temp.push(item);
       }
