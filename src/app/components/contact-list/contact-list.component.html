@@ -1,6 +1,6 @@
 <h1 class="p-3">Contact Management</h1>
 <section class="contact-lists-wrapper d-flex flex-column justify-center gap-3 p-3">
-    <input class="form-control" type="text" (input)="onSearch($event)" placeholder="Universal search" />
+    <input class="form-control" type="text" (input)="onSearch($event)" placeholder="Universal search" (focus)="onFocus($event)"/>
     <section class="contact-lists-section list-group" (scroll)="onScroll($event)">
         <div class="contact-lists list-group-item"  *ngFor="let item of contactsList; let i = index"
             [ngClass]="innerWidth >= 1000 && item.isSelected ? 'active ':''" (click)="onClickContact(item)">
@@ -25,6 +25,6 @@
         <p class="m-auto" *ngIf="isContactListEnded">Thats All</p>
         <p class="m-auto" *ngIf="!contactsList.length">No Contact found</p>
     </section>
-    <mat-paginator [length]="this.contactsListData.length" [pageSize]="this.pageSize" (page)="onPageChange($event)">
+    <mat-paginator [ngStyle]="this.searchValue ? {'visibility':'hidden'}:{}" [length]="this.contactsListData.length" [pageSize]="this.pageSize" (page)="onPageChange($event)">
     </mat-paginator>
 </section>
